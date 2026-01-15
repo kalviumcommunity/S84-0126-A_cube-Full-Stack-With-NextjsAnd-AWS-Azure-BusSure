@@ -115,3 +115,102 @@ Loading & error states
 
 🎯 Phase 2 Result:
 You now have a real full-stack CRUD app
+
+
+-----------------
+  
+
+🔹 PHASE 3 — Production Ready (Days 11–20)
+
+Focus: Redis + Docker + Cloud + CI/CD
+
+Day 11 – Redis Basics
+
+Why caching is needed
+
+Redis concepts (key, TTL)
+
+Install Redis
+
+Simple cache logic
+
+Day 12 – Redis Integration
+
+Cache API responses
+
+Cache-first → DB fallback
+
+Improve performance
+
+Day 13 – Docker Fundamentals
+
+Containers vs VMs
+
+Dockerfile for Next.js
+
+Build & run container
+
+Day 14 – Docker Compose
+
+Dockerize:
+
+Next.js
+
+PostgreSQL
+
+Redis
+
+Environment variables
+
+Day 15 – Cloud Basics
+
+AWS or Azure overview
+
+Compute, networking, storage
+
+Choose deployment strategy
+
+Day 16 – Production Configuration
+
+Environment variables
+
+Security basics
+
+Production builds
+
+Day 17 – CI/CD with GitHub Actions
+
+What is CI/CD
+
+Build pipeline
+
+Docker image automation
+
+Day 18 – Deployment
+
+Deploy containers to cloud
+
+Connect cloud DB
+
+Test live app
+
+Day 19 – Debug & Optimize
+
+Fix bugs
+
+Improve API performance
+
+Clean code & UI
+
+Day 20 – Final Review
+
+Architecture explanation
+
+Revise all tools
+
+Write README
+
+Push final code
+
+🎯 Phase 3 Result:
+A fully deployed, industry-grade full-stack application
