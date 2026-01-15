@@ -1,8 +1,10 @@
-# Intercity Bus Refund Transparency System
+Intercity Bus Refund Transparency System
 
 This project aims to bring transparency and accountability to intercity bus ticket cancellations and refunds.
-## Transparency Goal
-The system will clearly show cancellation rules, refund timelines, and status tracking for users.
+
+Transparency Goal
+
+The system clearly shows cancellation rules, refund timelines, and real-time status tracking for users, reducing confusion and improving trust in the refund process.
 
 🔹 PHASE 1 — Next.js Core (Days 1–5)
 
@@ -51,8 +53,6 @@ Call APIs from frontend
 ✅ Outcome: Frontend + backend connected
 
 Day 5 – Mini Integration
-
-Small feature:
 
 Form → API → response
 
@@ -114,11 +114,42 @@ Display DB data
 Loading & error states
 
 🎯 Phase 2 Result:
-You now have a real full-stack CRUD app
+You now have a real full-stack CRUD application with a persistent database and API-driven data flow.
 
+🔹 Rendering Strategies Used (Next.js App Router)
 
------------------
-  
+To optimize performance, scalability, and data freshness, this project uses multiple rendering strategies provided by the Next.js App Router.
+
+Static Rendering (SSG)
+
+Pages: Home, About
+Why:
+These pages contain informational content that does not change frequently.
+They are pre-rendered at build time and served as static HTML, resulting in very fast load times and excellent scalability with minimal server cost.
+
+Dynamic Rendering (SSR)
+
+Pages: Refund Status Dashboard
+Why:
+This page displays real-time, user-specific data such as refund status and request history.
+It is rendered on every request to ensure the data is always fresh and accurate, even though it has a higher server cost.
+
+Hybrid Rendering (ISR)
+
+Pages: Cancellation Rules, Refund Policy
+Why:
+These pages are mostly static but may change occasionally due to policy updates.
+Incremental Static Regeneration (ISR) allows the app to stay fast while automatically refreshing content at intervals without a full rebuild.
+
+Performance & Scalability Trade-offs
+
+Static Rendering → Best performance and scalability, but data can become stale
+
+Dynamic Rendering → Always fresh data, but higher server cost
+
+Hybrid Rendering → Balanced approach, combining speed with controlled freshness
+
+Choosing the right rendering strategy per page ensures the application remains fast, scalable, and cost-efficient as usage grows.
 
 🔹 PHASE 3 — Production Ready (Days 11–20)
 
@@ -152,13 +183,7 @@ Build & run container
 
 Day 14 – Docker Compose
 
-Dockerize:
-
-Next.js
-
-PostgreSQL
-
-Redis
+Dockerize Next.js, PostgreSQL, Redis
 
 Environment variables
 
