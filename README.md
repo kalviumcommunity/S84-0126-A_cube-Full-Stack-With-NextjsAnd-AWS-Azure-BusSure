@@ -62,3 +62,56 @@ Revision
 
 🎯 Phase 1 Result:
 You understand why Next.js is a full-stack framework
+
+🔹 PHASE 2 — Database Layer (Days 6–10)
+
+Focus: PostgreSQL + Prisma
+
+Day 6 – PostgreSQL Basics
+
+Relational DB concepts
+
+Tables, rows, keys
+
+Install PostgreSQL
+
+Basic SQL commands
+
+Day 7 – Prisma Setup
+
+What is ORM
+
+Prisma installation
+
+Connect Prisma to PostgreSQL
+
+First migration
+
+Day 8 – Schema Design
+
+Data modeling
+
+Relations (1–many)
+
+Update Prisma schema
+
+Migrate DB
+
+Day 9 – CRUD APIs
+
+Create, Read, Update, Delete
+
+Prisma Client usage
+
+Error handling
+
+Day 10 – Frontend + DB
+
+Connect forms to DB
+
+Display DB data
+
+Loading & error states
+
+🎯 Phase 2 Result:
+You now have a real full-stack CRUD app
