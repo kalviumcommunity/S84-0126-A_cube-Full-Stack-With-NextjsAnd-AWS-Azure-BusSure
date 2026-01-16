@@ -239,3 +239,30 @@ Push final code
 
 🎯 Phase 3 Result:
 A fully deployed, industry-grade full-stack application
+
+## Environment-Aware Builds & Secrets Management
+
+This project is configured to support multiple environments to ensure safe and reliable deployments.
+
+### Environments
+- Development
+- Staging
+- Production
+
+Separate environment files are used:
+- .env.development
+- .env.staging
+- .env.production
+
+Only `.env.example` is committed to the repository. Actual environment files are ignored using `.gitignore` to prevent exposing sensitive information.
+
+### Secrets Management
+Sensitive values such as API URLs and environment identifiers are stored using environment variables and are never hardcoded in the application. In production, these values can be securely managed using tools like GitHub Secrets or cloud secret managers.
+
+### Why This Matters
+Using environment-aware builds ensures that:
+- Development, staging, and production behave independently
+- Secrets are never exposed in version control
+- CI/CD pipelines are safer and more reliable
+
+This setup mirrors real-world DevOps practices used in production systems.
