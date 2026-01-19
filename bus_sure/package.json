@@ -10,8 +10,6 @@
     "build:development": "next build",
     "build:staging": "next build",
     "build:production": "next build"
-}
-
   },
   "dependencies": {
     "next": "16.1.2",
