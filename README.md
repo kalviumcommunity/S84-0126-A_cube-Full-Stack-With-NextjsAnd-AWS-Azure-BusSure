@@ -287,3 +287,4 @@ No sensitive data is committed to the repository. Environment variables are used
 ### Reflection
 The most challenging part was understanding how multiple tools connect together in a deployment pipeline. Docker provided consistency, while CI/CD automation improved confidence in builds. In future deployments, adding automated tests and environment-specific deployments would further improve reliability.
 
+
