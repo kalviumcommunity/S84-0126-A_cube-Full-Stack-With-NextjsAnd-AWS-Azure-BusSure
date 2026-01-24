@@ -1,0 +1,253 @@
+// Prisma schema file
+// Target: Production-ready Bus Ticket Booking System (PostgreSQL)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+//////////////////////
+// ENUMS (SQLite Compatible)
+//////////////////////
+
+// Note: SQLite doesn't support enums, so we use string fields with constraints
+
+//////////////////////
+// USER
+//////////////////////
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  firstName     String
+  lastName      String
+  phone         String?
+  dateOfBirth   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  bookings      Booking[]
+  payments      Payment[]
+  refunds       Refund[]
+
+  @@map("users")
+}
+
+//////////////////////
+// BUS OPERATOR
+//////////////////////
+
+model BusOperator {
+  id              String          @id @default(cuid())
+  name            String          @unique
+  email           String          @unique
+  phone           String
+  address         String
+  licenseNo       String          @unique
+  isActive        Boolean         @default(true)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  buses           Bus[]
+  routes          Route[]
+  refundPolicies  RefundPolicy[]
+
+  @@map("bus_operators")
+}
+
+//////////////////////
+// ROUTE
+//////////////////////
+
+model Route {
+  id                 String        @id @default(cuid())
+  operatorId         String
+  fromCity           String
+  toCity             String
+  distance           Float
+  estimatedDuration  Int
+  isActive           Boolean       @default(true)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  operator           BusOperator   @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  schedules          Schedule[]
+
+  @@unique([operatorId, fromCity, toCity])
+  @@index([fromCity, toCity])
+  @@map("routes")
+}
+
+//////////////////////
+// BUS
+//////////////////////
+
+model Bus {
+  id          String        @id @default(cuid())
+  operatorId  String
+  busNumber   String        @unique
+  model       String
+  capacity    Int
+  amenities   String?       // JSON string for SQLite compatibility
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  operator    BusOperator   @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  schedules   Schedule[]
+
+  @@map("buses")
+}
+
+//////////////////////
+// SCHEDULE
+//////////////////////
+
+model Schedule {
+  id              String      @id @default(cuid())
+  routeId         String
+  busId           String
+  departureTime   DateTime
+  arrivalTime     DateTime
+  basePrice       Float       // SQLite uses Float instead of Decimal
+  isActive        Boolean     @default(true)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  route           Route       @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  bus             Bus         @relation(fields: [busId], references: [id], onDelete: Cascade)
+  bookings        Booking[]
+
+  @@unique([busId, departureTime])
+  @@index([departureTime])
+  @@index([routeId, departureTime])
+  @@map("schedules")
+}
+
+//////////////////////
+// BOOKING
+//////////////////////
+
+model Booking {
+  id              String          @id @default(cuid())
+  userId          String
+  scheduleId      String
+  bookingRef      String          @unique
+  totalAmount     Float           // SQLite uses Float instead of Decimal
+  status          String          @default("CONFIRMED") // CONFIRMED, CANCELLED, COMPLETED, NO_SHOW
+  passengerCount  Int
+  contactEmail    String
+  contactPhone    String
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  schedule        Schedule        @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  tickets         Ticket[]
+  payments        Payment[]
+  refunds         Refund[]
+
+  @@index([userId])
+  @@index([scheduleId])
+  @@map("bookings")
+}
+
+//////////////////////
+// TICKET
+//////////////////////
+
+model Ticket {
+  id              String        @id @default(cuid())
+  bookingId       String
+  seatNumber      String
+  passengerName   String
+  passengerAge    Int?
+  gender          String?       // MALE, FEMALE, OTHER
+  price           Float         // SQLite uses Float instead of Decimal
+  status          String        @default("ACTIVE") // ACTIVE, CANCELLED, USED
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  booking         Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@unique([bookingId, seatNumber])
+  @@map("tickets")
+}
+
+//////////////////////
+// REFUND POLICY
+//////////////////////
+
+model RefundPolicy {
+  id                    String        @id @default(cuid())
+  operatorId            String
+  name                  String
+  description           String?
+  hoursBeforeDeparture  Int
+  refundPercentage      Float
+  processingFee         Float         // SQLite uses Float instead of Decimal
+  isActive              Boolean       @default(true)
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+
+  operator              BusOperator   @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  refunds               Refund[]
+
+  @@index([operatorId])
+  @@map("refund_policies")
+}
+
+//////////////////////
+// PAYMENT
+//////////////////////
+
+model Payment {
+  id              String          @id @default(cuid())
+  userId          String
+  bookingId       String
+  amount          Float           // SQLite uses Float instead of Decimal
+  paymentMethod   String          // CREDIT_CARD, DEBIT_CARD, UPI, NET_BANKING, WALLET
+  transactionId   String?         @unique
+  status          String          @default("PENDING") // PENDING, COMPLETED, FAILED, REFUNDED
+  processedAt     DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  booking         Booking         @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([bookingId])
+  @@map("payments")
+}
+
+//////////////////////
+// REFUND
+//////////////////////
+
+model Refund {
+  id                String          @id @default(cuid())
+  userId            String
+  bookingId         String
+  policyId          String
+  requestedAmount   Float           // SQLite uses Float instead of Decimal
+  refundAmount      Float           // SQLite uses Float instead of Decimal
+  processingFee     Float           // SQLite uses Float instead of Decimal
+  reason            String?
+  status            String          @default("PENDING") // PENDING, APPROVED, PROCESSED, REJECTED
+  processedAt       DateTime?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  booking           Booking         @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  policy            RefundPolicy    @relation(fields: [policyId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([bookingId])
+  @@map("refunds")
+}
