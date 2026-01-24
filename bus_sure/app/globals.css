@@ -3,6 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --mouse-x: 0px;
+  --mouse-y: 0px;
 }
 
 @theme inline {
@@ -23,4 +25,59 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Custom radial gradient utility */
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+/* Interactive elements that respond to mouse proximity */
+.cursor-interactive {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.cursor-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 10px 25px rgba(59, 130, 246, 0.3),
+    0 0 30px rgba(59, 130, 246, 0.2);
+}
+
+/* Enhanced glow for interactive elements */
+.glow-on-hover {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.glow-on-hover:hover {
+  box-shadow: 
+    0 0 20px rgba(59, 130, 246, 0.4),
+    0 0 40px rgba(59, 130, 246, 0.2),
+    0 0 60px rgba(59, 130, 246, 0.1);
+  transform: translateY(-2px) scale(1.02);
+}
+
+
+
+/* Animated background patterns */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(180deg); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Gradient animation */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
 }

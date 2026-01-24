@@ -2,13 +2,13 @@ import Link from "next/link";
 
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
+    <main className="flex min-h-screen flex-col items-center justify-between relative">
       {/* Hero Section */}
-      <section className="w-full bg-white dark:bg-gray-900 bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')] dark:bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg')]">
+      <section className="w-full relative">
         <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 z-10 relative">
           <a
             href="#"
-            className="inline-flex justify-between items-center py-1 px-1 pr-4 mb-7 text-sm text-blue-700 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800"
+            className="glow-on-hover inline-flex justify-between items-center py-1 px-1 pr-4 mb-7 text-sm text-blue-700 bg-blue-100/80 backdrop-blur-sm rounded-full dark:bg-blue-900/80 dark:text-blue-300 hover:bg-blue-200/80 dark:hover:bg-blue-800/80 transition-all duration-300"
           >
             <span className="text-xs bg-blue-600 rounded-full text-white px-4 py-1.5 mr-3">
               New
@@ -34,7 +34,7 @@ export default function HomePage() {
           </a>
           <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
             Reliable Intercity Bus
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-violet-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-violet-600 animate-gradient">
               {" "}
               Refund System
             </span>
@@ -46,7 +46,7 @@ export default function HomePage() {
           <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
             <Link
               href="/signup"
-              className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 transition-transform hover:scale-105"
+              className="glow-on-hover inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 transition-all duration-300 hover:scale-105 shadow-lg"
             >
               Get started
               <svg
@@ -67,17 +67,16 @@ export default function HomePage() {
             </Link>
             <Link
               href="/about"
-              className="inline-flex justify-center items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800 transition-colors"
+              className="glow-on-hover inline-flex justify-center items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300/50 bg-white/20 backdrop-blur-sm hover:bg-gray-100/30 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700/50 dark:bg-gray-800/20 dark:hover:bg-gray-700/30 dark:focus:ring-gray-800 transition-all duration-300"
             >
               Learn more
             </Link>
           </div>
         </div>
-        <div className="bg-gradient-to-b from-blue-50 to-transparent dark:from-blue-900 w-full h-full absolute top-0 left-0 z-0 opacity-40"></div>
       </section>
 
       {/* Features Section */}
-      <section className="bg-white dark:bg-gray-900 w-full">
+      <section className="w-full relative">
         <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
           <div className="text-center mb-10">
             <h2 className="mb-4 text-3xl tracking-tight font-extrabold text-gray-900 dark:text-white">
@@ -88,8 +87,8 @@ export default function HomePage() {
             </p>
           </div>
           <div className="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0">
-            <div className="p-6 bg-gray-50 rounded-lg dark:bg-gray-800 hover:shadow-lg transition-shadow duration-300">
-              <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-blue-100 lg:h-12 lg:w-12 dark:bg-blue-900">
+            <div className="glow-on-hover p-6 bg-white/30 backdrop-blur-sm rounded-lg dark:bg-gray-800/30 hover:shadow-lg transition-all duration-300 border border-white/20 dark:border-gray-700/20">
+              <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-blue-100 lg:h-12 lg:w-12 dark:bg-blue-900 animate-float">
                 <svg
                   className="w-5 h-5 text-blue-600 lg:w-6 lg:h-6 dark:text-blue-300"
                   fill="currentColor"
@@ -105,8 +104,8 @@ export default function HomePage() {
                 Get your money back instantly when you cancel within the policy window. No more waiting days.
               </p>
             </div>
-            <div className="p-6 bg-gray-50 rounded-lg dark:bg-gray-800 hover:shadow-lg transition-shadow duration-300">
-              <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-blue-100 lg:h-12 lg:w-12 dark:bg-blue-900">
+            <div className="glow-on-hover p-6 bg-white/30 backdrop-blur-sm rounded-lg dark:bg-gray-800/30 hover:shadow-lg transition-all duration-300 border border-white/20 dark:border-gray-700/20">
+              <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-blue-100 lg:h-12 lg:w-12 dark:bg-blue-900 animate-float" style={{ animationDelay: '1s' }}>
                 <svg
                   className="w-5 h-5 text-blue-600 lg:w-6 lg:h-6 dark:text-blue-300"
                   fill="currentColor"
@@ -127,8 +126,8 @@ export default function HomePage() {
                 Clear cancellation policies displayed upfront. Know exactly how much you'll get back, every time.
               </p>
             </div>
-            <div className="p-6 bg-gray-50 rounded-lg dark:bg-gray-800 hover:shadow-lg transition-shadow duration-300">
-              <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-blue-100 lg:h-12 lg:w-12 dark:bg-blue-900">
+            <div className="glow-on-hover p-6 bg-white/30 backdrop-blur-sm rounded-lg dark:bg-gray-800/30 hover:shadow-lg transition-all duration-300 border border-white/20 dark:border-gray-700/20">
+              <div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-blue-100 lg:h-12 lg:w-12 dark:bg-blue-900 animate-float" style={{ animationDelay: '2s' }}>
                 <svg
                   className="w-5 h-5 text-blue-600 lg:w-6 lg:h-6 dark:text-blue-300"
                   fill="currentColor"
