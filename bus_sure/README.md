@@ -177,6 +177,11 @@ npx prisma migrate dev
 npx tsx prisma/seed.ts
 ```
 
+
+# Seed sample data
+npx tsx prisma/seed.ts
+```
+
 4. Run the development server:
 ```bash
 npm run dev
