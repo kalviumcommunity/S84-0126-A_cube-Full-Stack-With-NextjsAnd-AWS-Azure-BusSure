@@ -1,4 +1,5 @@
 import Link from "next/link";
+import DatabaseStatus from "./components/DatabaseStatus";
 
 export default function HomePage() {
   return (
@@ -71,6 +72,11 @@ export default function HomePage() {
             >
               Learn more
             </Link>
+          </div>
+          
+          {/* Database Status Component */}
+          <div className="mt-8 max-w-md mx-auto">
+            <DatabaseStatus />
           </div>
         </div>
       </section>
