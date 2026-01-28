@@ -103,12 +103,40 @@ async function main() {
     },
   });
 
+  // Create sample documents
+  const document1 = await prisma.document.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      filename: 'policy_document_pol001.pdf',
+      originalName: 'Policy Document POL-001.pdf',
+      mimeType: 'application/pdf',
+      size: 1024000,
+      uploadedBy: user2.id,
+      policyId: policy1.id,
+    },
+  });
+
+  const document2 = await prisma.document.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      filename: 'claim_evidence_clm001.jpg',
+      originalName: 'Accident Photo - Front Bumper.jpg',
+      mimeType: 'image/jpeg',
+      size: 512000,
+      uploadedBy: user1.id,
+      claimId: claim1.id,
+    },
+  });
+
   console.log('✅ Database seeding completed successfully!');
   console.log('Created:', {
     users: [user1.name, user2.name],
     buses: [bus1.registrationNumber, bus2.registrationNumber],
     policies: [policy1.policyNumber, policy2.policyNumber],
     claims: [claim1.claimNumber],
+    documents: [document1.originalName, document2.originalName],
   });
 }
 
