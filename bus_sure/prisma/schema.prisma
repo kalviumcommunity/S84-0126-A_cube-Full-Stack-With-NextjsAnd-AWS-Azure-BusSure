@@ -26,7 +26,12 @@ model User {
   policies  Policy[]
   claims    Claim[]
   documents Document[]
+  auditLogs AuditLog[]
   
+  // Indexes for optimization
+  @@index([role])
+  @@index([createdAt])
+  @@index([role, createdAt])
   @@map("users")
 }
 
@@ -67,6 +72,12 @@ model Policy {
   claims        Claim[]
   documents     Document[]
   
+  // Indexes for optimization
+  @@index([userId])
+  @@index([status])
+  @@index([status, createdAt])
+  @@index([userId, status])
+  @@index([endDate])
   @@map("policies")
 }
 
@@ -86,7 +97,15 @@ model Claim {
   user          User        @relation(fields: [userId], references: [id])
   policy        Policy      @relation(fields: [policyId], references: [id])
   documents     Document[]
+  payment       Payment?
   
+  // Indexes for optimization
+  @@index([userId])
+  @@index([policyId])
+  @@index([status])
+  @@index([status, createdAt])
+  @@index([userId, status])
+  @@index([incidentDate])
   @@map("claims")
 }
 
@@ -107,5 +126,51 @@ model Document {
   claim       Claim?   @relation(fields: [claimId], references: [id])
   policy      Policy?  @relation(fields: [policyId], references: [id])
   
+  // Indexes for optimization
+  @@index([uploadedBy])
+  @@index([claimId])
+  @@index([policyId])
+  @@index([createdAt])
   @@map("documents")
+}
+
+model Payment {
+  id            Int      @id @default(autoincrement())
+  claimId       Int      @unique
+  amount        Float
+  method        String   // BANK_TRANSFER, CHECK, DIGITAL_WALLET
+  status        String   @default("PENDING") // PENDING, PROCESSED, FAILED, CANCELLED
+  transactionId String?  @unique
+  processedAt   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Relations
+  claim         Claim    @relation(fields: [claimId], references: [id])
+  
+  // Indexes for optimization
+  @@index([status])
+  @@index([createdAt])
+  @@index([status, createdAt])
+  @@map("payments")
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  action    String   // CLAIM_CREATED, CLAIM_APPROVED, PAYMENT_PROCESSED, etc.
+  entityType String  // CLAIM, POLICY, USER, PAYMENT
+  entityId  Int
+  userId    Int
+  details   String?  // JSON string with additional details
+  createdAt DateTime @default(now())
+  
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+  
+  // Indexes for optimization
+  @@index([entityType, entityId])
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
 }
