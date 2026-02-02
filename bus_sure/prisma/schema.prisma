@@ -17,6 +17,7 @@ model User {
   id        Int       @id @default(autoincrement())
   email     String    @unique
   name      String
+  password  String    // Added for authentication
   phone     String?
   role      String    @default("CUSTOMER") // CUSTOMER, AGENT, ADMIN
   createdAt DateTime  @default(now())

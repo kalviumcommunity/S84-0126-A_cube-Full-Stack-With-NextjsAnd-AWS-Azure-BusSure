@@ -79,8 +79,10 @@ const users = await prisma.user.findMany({
 
 ### API Routes
 - `GET /api/test-db` - Database connection test
-- `GET /api/users` - Fetch all users with relations
-- `POST /api/users` - Create new user
+- `POST /api/auth/signup` - User registration with secure password hashing
+- `POST /api/auth/login` - User authentication with JWT token generation
+- `POST /api/auth/reset-password` - Password reset for authenticated users
+- `GET /api/users` - Protected route to get user profile (requires JWT token)
 
 ### Available Scripts
 ```bash
@@ -89,6 +91,7 @@ npm run db:push        # Push schema to database
 npm run db:migrate     # Create and run migrations
 npm run db:studio      # Open Prisma Studio GUI
 npm run db:seed        # Run database seeding
+npm run test:auth      # Test authentication APIs
 ```
 
 ### Benefits of Prisma Integration
@@ -121,6 +124,8 @@ BusSure is a transparent and reliable intercity bus refund system that provides 
 - **Instant Refunds**: Get your money back instantly when you cancel within the policy window
 - **Transparent Policies**: Clear cancellation policies displayed upfront
 - **Secure & Reliable**: Enterprise-grade security protocols for transactions and data
+- **User Authentication**: Secure signup/login with bcrypt password hashing and JWT tokens
+- **Protected Routes**: Token-based authentication for accessing user data and operations
 
 ## Database Schema
 
@@ -225,7 +230,7 @@ bus_sure/
 
 - **Frontend**: Next.js 16, React 19, TypeScript, Tailwind CSS
 - **Database**: SQLite (development), Prisma ORM
-- **Authentication**: (To be implemented)
+- **Authentication**: bcrypt + JWT for secure user authentication
 - **Deployment**: (To be configured)
 
 ## Development
