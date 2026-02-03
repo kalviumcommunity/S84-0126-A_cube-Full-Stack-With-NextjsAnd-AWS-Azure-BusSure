@@ -5,6 +5,18 @@ import { prisma } from "@/lib/prisma";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
 
+// Type for user with password (for internal use only)
+type UserWithPassword = {
+  id: number;
+  email: string;
+  name: string;
+  password: string;
+  role: string;
+  phone: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -18,10 +30,10 @@ export async function POST(req: Request) {
       );
     }
 
-    // Find user by email
+    // Find user by email (including password for verification)
     const user = await prisma.user.findUnique({
       where: { email }
-    });
+    }) as UserWithPassword | null;
 
     if (!user) {
       return NextResponse.json(
@@ -50,8 +62,8 @@ export async function POST(req: Request) {
       { expiresIn: "24h" } // Token expires in 24 hours
     );
 
-    // Return success response with token and user info
-    return NextResponse.json({
+    // Return success response with token and user info (excluding password)
+    const response = NextResponse.json({
       success: true,
       message: "Login successful",
       token,
@@ -62,6 +74,16 @@ export async function POST(req: Request) {
         role: user.role
       }
     });
+
+    // Set HTTP-only cookie for additional security
+    response.cookies.set('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 24 * 60 * 60 // 24 hours
+    });
+
+    return response;
 
   } catch (error) {
     console.error("Login error:", error);
