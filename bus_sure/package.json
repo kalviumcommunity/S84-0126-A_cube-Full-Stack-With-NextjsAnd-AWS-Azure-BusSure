@@ -17,13 +17,18 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:test": "tsx scripts/test-database.ts",
     "db:reset": "prisma migrate reset --force",
-    "db:status": "prisma migrate status"
+    "db:status": "prisma migrate status",
+    "test:auth": "tsx scripts/test-auth-apis.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "@types/bcrypt": "^6.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.3",
     "next": "16.1.2",
     "prisma": "^5.22.0",
     "react": "19.2.3",
