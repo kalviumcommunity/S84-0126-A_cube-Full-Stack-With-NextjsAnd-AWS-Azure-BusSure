@@ -41,8 +41,8 @@ export default function LoginPage() {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         
-        // Navigate to dashboard
-        router.push('/dashboard');
+        // Navigate to transparent refund page after login
+        router.push('/refund');
       } else {
         setError(data.message || 'Login failed');
       }

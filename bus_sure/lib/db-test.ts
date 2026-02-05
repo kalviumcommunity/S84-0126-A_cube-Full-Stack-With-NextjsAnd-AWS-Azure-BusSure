@@ -55,6 +55,7 @@ export async function createSampleData() {
       data: {
         email: 'john.doe@example.com',
         name: 'John Doe',
+        password: '$2b$10$WDTXylzDYrnJrJ4HSIyfZeA7SU6qjUAnURgW8CMocfF6GRxANwQO6',
         phone: '+1234567890',
         role: 'CUSTOMER',
       },

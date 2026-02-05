@@ -4,10 +4,10 @@ import { verifyToken, extractTokenFromRequest } from '@/lib/auth';
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Extract and verify JWT token
+    const { id } = await params;
     const token = extractTokenFromRequest(req as any);
     
     if (!token) {
@@ -25,7 +25,7 @@ export async function GET(
       );
     }
 
-    const userId = parseInt(params.id);
+    const userId = parseInt(id);
     
     // Users can only access their own profile unless they're admin
     if (decoded.id !== userId && decoded.role !== 'ADMIN') {
@@ -80,10 +80,10 @@ export async function GET(
 
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Extract and verify JWT token
+    const { id } = await params;
     const token = extractTokenFromRequest(req as any);
     
     if (!token) {
@@ -101,7 +101,7 @@ export async function PUT(
       );
     }
 
-    const userId = parseInt(params.id);
+    const userId = parseInt(id);
     
     // Users can only update their own profile unless they're admin
     if (decoded.id !== userId && decoded.role !== 'ADMIN') {
