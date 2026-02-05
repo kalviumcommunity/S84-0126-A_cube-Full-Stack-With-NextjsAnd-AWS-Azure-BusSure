@@ -45,7 +45,7 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
             <Link
-              href="/signup"
+              href="/refund"
               className="glow-on-hover inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 transition-all duration-300 hover:scale-105 shadow-lg"
             >
               Get started

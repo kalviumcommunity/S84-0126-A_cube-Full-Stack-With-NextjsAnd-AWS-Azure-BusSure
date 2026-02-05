@@ -1,10 +1,51 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userName, setUserName] = useState<string>("");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const token = localStorage.getItem("token");
+    const userRaw = localStorage.getItem("user");
+
+    if (token && userRaw) {
+      try {
+        const user = JSON.parse(userRaw);
+        setIsAuthenticated(true);
+        if (user?.name) setUserName(user.name);
+      } catch {
+        setIsAuthenticated(false);
+        setUserName("");
+      }
+    } else {
+      setIsAuthenticated(false);
+      setUserName("");
+    }
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch (e) {
+      console.error("Logout error", e);
+    } finally {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      }
+      setIsAuthenticated(false);
+      setUserName("");
+      router.push("/");
+    }
+  };
 
   return (
     <nav className="fixed w-full z-50 top-0 start-0 border-b border-white/5 bg-white/10 dark:bg-black/20 backdrop-blur-xl">
@@ -17,17 +58,38 @@ export default function Navbar() {
             BusSure
           </span>
         </Link>
-        <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-          <Link href="/login">
-            <button className="text-gray-900 bg-white/20 border border-white/20 focus:outline-none hover:bg-white/30 hover:border-white/40 focus:ring-4 focus:ring-blue-300/50 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800/30 dark:text-white dark:border-gray-600/30 dark:hover:bg-gray-700/40 dark:hover:border-gray-600/50 dark:focus:ring-gray-700/50 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] dark:hover:shadow-[0_0_20px_rgba(156,163,175,0.3)] backdrop-blur-sm">
-              Log in
-            </button>
-          </Link>
-          <Link href="/signup">
-            <button className="text-white bg-gradient-to-r from-blue-600/80 to-violet-600/80 hover:from-blue-600 hover:to-violet-600 focus:ring-4 focus:outline-none focus:ring-blue-300/50 dark:focus:ring-blue-800/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 transition-all duration-300 shadow-lg shadow-blue-500/30 hover:shadow-[0_0_25px_rgba(59,130,246,0.6)] hover:scale-105 backdrop-blur-sm">
-              Sign up
-            </button>
-          </Link>
+        <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse items-center">
+          {isAuthenticated ? (
+            <>
+              <span className="hidden md:inline text-sm text-gray-800 dark:text-gray-200 mr-2">
+                Hi, {userName || "user"}
+              </span>
+              <Link href="/refund">
+                <button className="text-white bg-gradient-to-r from-blue-600/80 to-violet-600/80 hover:from-blue-600 hover:to-violet-600 focus:ring-4 focus:outline-none focus:ring-blue-300/50 dark:focus:ring-blue-800/50 font-medium rounded-lg text-sm px-4 py-2 text-center me-2 mb-2 transition-all duration-300 shadow-lg shadow-blue-500/30 hover:shadow-[0_0_25px_rgba(59,130,246,0.6)] hover:scale-105 backdrop-blur-sm">
+                  Transparent refund
+                </button>
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="text-gray-900 bg-white/20 border border-white/20 focus:outline-none hover:bg-white/30 hover:border-white/40 focus:ring-4 focus:ring-blue-300/50 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-2 dark:bg-gray-800/30 dark:text-white dark:border-gray-600/30 dark:hover:bg-gray-700/40 dark:hover:border-gray-600/50 dark:focus:ring-gray-700/50 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] dark:hover:shadow-[0_0_20px_rgba(156,163,175,0.3)] backdrop-blur-sm"
+              >
+                Log out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/login">
+                <button className="text-gray-900 bg-white/20 border border-white/20 focus:outline-none hover:bg-white/30 hover:border-white/40 focus:ring-4 focus:ring-blue-300/50 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800/30 dark:text-white dark:border-gray-600/30 dark:hover:bg-gray-700/40 dark:hover:border-gray-600/50 dark:focus:ring-gray-700/50 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] dark:hover:shadow-[0_0_20px_rgba(156,163,175,0.3)] backdrop-blur-sm">
+                  Log in
+                </button>
+              </Link>
+              <Link href="/signup">
+                <button className="text-white bg-gradient-to-r from-blue-600/80 to-violet-600/80 hover:from-blue-600 hover:to-violet-600 focus:ring-4 focus:outline-none focus:ring-blue-300/50 dark:focus:ring-blue-800/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 transition-all duration-300 shadow-lg shadow-blue-500/30 hover:shadow-[0_0_25px_rgba(59,130,246,0.6)] hover:scale-105 backdrop-blur-sm">
+                  Sign up
+                </button>
+              </Link>
+            </>
+          )}
           <button
             onClick={() => setIsOpen(!isOpen)}
             type="button"
@@ -93,6 +155,16 @@ export default function Navbar() {
                 Dashboard
               </Link>
             </li>
+            {isAuthenticated && (
+              <li>
+                <Link
+                  href="/refund"
+                  className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100/20 md:hover:bg-transparent md:hover:text-blue-600 md:p-0 md:dark:hover:text-blue-400 dark:text-white dark:hover:bg-gray-700/30 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.5)] md:hover:scale-105"
+                >
+                  Transparent refund
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>

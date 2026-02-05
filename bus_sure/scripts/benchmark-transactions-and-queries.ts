@@ -21,10 +21,10 @@ async function seedTestData() {
   
   // Create test users (handle duplicates manually)
   const testUsers = [
-    { email: 'customer1@test.com', name: 'John Doe', role: 'CUSTOMER' },
-    { email: 'customer2@test.com', name: 'Jane Smith', role: 'CUSTOMER' },
-    { email: 'agent1@test.com', name: 'Agent Brown', role: 'AGENT' },
-    { email: 'admin1@test.com', name: 'Admin Wilson', role: 'ADMIN' },
+    { email: 'customer1@test.com', name: 'John Doe', password: '$2b$10$WDTXylzDYrnJrJ4HSIyfZeA7SU6qjUAnURgW8CMocfF6GRxANwQO6', role: 'CUSTOMER' },
+    { email: 'customer2@test.com', name: 'Jane Smith', password: '$2b$10$WDTXylzDYrnJrJ4HSIyfZeA7SU6qjUAnURgW8CMocfF6GRxANwQO6', role: 'CUSTOMER' },
+    { email: 'agent1@test.com', name: 'Agent Brown', password: '$2b$10$WDTXylzDYrnJrJ4HSIyfZeA7SU6qjUAnURgW8CMocfF6GRxANwQO6', role: 'AGENT' },
+    { email: 'admin1@test.com', name: 'Admin Wilson', password: '$2b$10$WDTXylzDYrnJrJ4HSIyfZeA7SU6qjUAnURgW8CMocfF6GRxANwQO6', role: 'ADMIN' },
   ];
 
   let userCount = 0;

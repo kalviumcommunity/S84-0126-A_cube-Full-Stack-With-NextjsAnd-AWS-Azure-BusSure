@@ -17,10 +17,32 @@ interface DashboardStats {
   totalCoverage: number;
 }
 
+interface ClaimListItem {
+  id: number;
+  claimNumber: string;
+  amount: number;
+  status: string;
+  createdAt: string;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+  };
+  policy: {
+    id: number;
+    policyNumber: string;
+  } | null;
+}
+
 export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [agentClaims, setAgentClaims] = useState<ClaimListItem[]>([]);
+  const [claimsLoading, setClaimsLoading] = useState(false);
+  const [claimsError, setClaimsError] = useState<string | null>(null);
+  const [actionLoadingId, setActionLoadingId] = useState<number | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -56,6 +78,129 @@ export default function DashboardPage() {
 
     checkAuth();
   }, [router]);
+
+  // Load pending claims for agents/admins so they can act on requests
+  useEffect(() => {
+    const loadAgentClaims = async () => {
+      if (!user || (user.role !== 'AGENT' && user.role !== 'ADMIN')) return;
+
+      try {
+        setClaimsLoading(true);
+        setClaimsError(null);
+
+        const res = await fetch('/api/claims/optimized?status=PENDING&limit=20');
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+          setClaimsError(data.message || data.error || 'Failed to load claims');
+          return;
+        }
+
+        const claims: ClaimListItem[] = data.data.claims || [];
+        setAgentClaims(claims);
+      } catch (err) {
+        console.error('Failed to load agent claims', err);
+        setClaimsError('Failed to load claims');
+      } finally {
+        setClaimsLoading(false);
+      }
+    };
+
+    loadAgentClaims();
+  }, [user]);
+
+  const handleApproveClaim = async (claim: ClaimListItem) => {
+    if (!user) return;
+
+    try {
+      setActionLoadingId(claim.id);
+      setActionError(null);
+
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setActionError('Session expired. Please log in again.');
+        router.push('/login');
+        return;
+      }
+
+      const res = await fetch('/api/claims/process', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          claimId: claim.id,
+          approvedAmount: claim.amount,
+          paymentMethod: 'BANK_TRANSFER',
+          transactionId: undefined,
+          processedBy: user.id,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        setActionError(data.message || data.error || 'Failed to approve claim');
+        return;
+      }
+
+      // Optimistically update list: remove approved claim from pending list
+      setAgentClaims((prev) => prev.filter((c) => c.id !== claim.id));
+    } catch (err) {
+      console.error('Approve claim error', err);
+      setActionError('Failed to approve claim');
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
+
+  const handleRejectClaim = async (claim: ClaimListItem) => {
+    if (!user) return;
+
+    try {
+      setActionLoadingId(claim.id);
+      setActionError(null);
+
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setActionError('Session expired. Please log in again.');
+        router.push('/login');
+        return;
+      }
+
+      const res = await fetch('/api/claims/optimized', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          action: 'bulkUpdate',
+          data: {
+            claimIds: [claim.id],
+            newStatus: 'REJECTED',
+            updatedBy: user.id,
+          },
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        setActionError(data.message || data.error || 'Failed to reject claim');
+        return;
+      }
+
+      // Remove rejected claim from pending list
+      setAgentClaims((prev) => prev.filter((c) => c.id !== claim.id));
+    } catch (err) {
+      console.error('Reject claim error', err);
+      setActionError('Failed to reject claim');
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -234,6 +379,108 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+
+        {/* Agent/Admin view: Pending refund/claim requests */}
+        {user.role !== 'CUSTOMER' && (
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Pending refund requests
+              </h3>
+              {claimsLoading && (
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  Loading...
+                </span>
+              )}
+            </div>
+
+            {claimsError && (
+              <div className="mb-4 p-3 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-900 dark:text-red-400">
+                {claimsError}
+              </div>
+            )}
+
+            {actionError && (
+              <div className="mb-4 p-3 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-900 dark:text-red-400">
+                {actionError}
+              </div>
+            )}
+
+            {agentClaims.length === 0 && !claimsLoading ? (
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                No pending refund requests at the moment.
+              </p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-200 dark:border-gray-700 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
+                      <th className="py-2 pr-4">Claim #</th>
+                      <th className="py-2 pr-4">Customer</th>
+                      <th className="py-2 pr-4">Policy</th>
+                      <th className="py-2 pr-4">Amount</th>
+                      <th className="py-2 pr-4">Created</th>
+                      <th className="py-2 pr-4">Status</th>
+                      <th className="py-2 pr-4 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {agentClaims.map((claim) => (
+                      <tr
+                        key={claim.id}
+                        className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900/50"
+                      >
+                        <td className="py-2 pr-4 text-gray-900 dark:text-gray-100">
+                          {claim.claimNumber}
+                        </td>
+                        <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">
+                          <div className="flex flex-col">
+                            <span>{claim.user?.name}</span>
+                            <span className="text-xs text-gray-500 dark:text-gray-400">
+                              {claim.user?.email}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">
+                          {claim.policy?.policyNumber || '—'}
+                        </td>
+                        <td className="py-2 pr-4 text-gray-900 dark:text-gray-100">
+                          ₹{claim.amount.toFixed(2)}
+                        </td>
+                        <td className="py-2 pr-4 text-gray-600 dark:text-gray-300">
+                          {new Date(claim.createdAt).toLocaleString()}
+                        </td>
+                        <td className="py-2 pr-4">
+                          <span className="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
+                            {claim.status}
+                          </span>
+                        </td>
+                        <td className="py-2 pr-4 text-right space-x-2">
+                          <button
+                            onClick={() => handleApproveClaim(claim)}
+                            disabled={actionLoadingId === claim.id}
+                            className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {actionLoadingId === claim.id
+                              ? 'Processing...'
+                              : 'Approve'}
+                          </button>
+                          <button
+                            onClick={() => handleRejectClaim(claim)}
+                            disabled={actionLoadingId === claim.id}
+                            className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md text-red-600 border border-red-600 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Reject
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
       </main>
     </div>
   );
