@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import QueryOptimizationService from '../../../../lib/query-optimization-service';
+import { getCachedJson, setCachedJson, deleteKeysByPattern } from '../../../../lib/redis';
 
 const queryService = new QueryOptimizationService();
 
@@ -11,8 +12,21 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status') || undefined;
     const userId = searchParams.get('userId') ? parseInt(searchParams.get('userId')!) : undefined;
 
-    // Get optimized claims list
+    const cacheKey = `claims:optimized:page=${page}:limit=${limit}:status=${status ?? 'any'}:userId=${userId ?? 'any'}`;
+    const ttl = Number(process.env.REDIS_TTL_SECONDS ?? 300);
+
+    const cached = await getCachedJson<unknown>(cacheKey);
+    if (cached) {
+      return NextResponse.json({
+        success: true,
+        data: cached,
+        cached: true,
+      });
+    }
+
     const result = await queryService.getOptimizedClaimsList(page, limit, status, userId);
+
+    await setCachedJson(cacheKey, result, ttl);
 
     return NextResponse.json({
       success: true,
@@ -60,6 +74,8 @@ export async function POST(request: NextRequest) {
           data.newStatus,
           data.updatedBy
         );
+        // Invalidate any cached optimized claims when bulk status changes
+        await deleteKeysByPattern('claims:optimized:*');
         break;
       
       default:
