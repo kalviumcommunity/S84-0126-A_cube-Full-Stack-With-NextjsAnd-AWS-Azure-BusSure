@@ -159,7 +159,7 @@ Day 11 – Redis Basics
 
 Why caching is needed
 
-Redis concepts (key, TTL)
+Redis concepts (key, TTL) 
 
 Install Redis
 
