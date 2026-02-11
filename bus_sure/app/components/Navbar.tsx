@@ -13,22 +13,38 @@ export default function Navbar() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const token = localStorage.getItem("token");
-    const userRaw = localStorage.getItem("user");
+    const checkAuth = () => {
+      const token = localStorage.getItem("token");
+      const userRaw = localStorage.getItem("user");
 
-    if (token && userRaw) {
-      try {
-        const user = JSON.parse(userRaw);
-        setIsAuthenticated(true);
-        if (user?.name) setUserName(user.name);
-      } catch {
+      if (token && userRaw) {
+        try {
+          const user = JSON.parse(userRaw);
+          setIsAuthenticated(true);
+          if (user?.name) setUserName(user.name);
+        } catch {
+          setIsAuthenticated(false);
+          setUserName("");
+        }
+      } else {
         setIsAuthenticated(false);
         setUserName("");
       }
-    } else {
-      setIsAuthenticated(false);
-      setUserName("");
-    }
+    };
+
+    // Check auth on mount
+    checkAuth();
+
+    // Listen for storage changes (for multi-tab sync)
+    window.addEventListener("storage", checkAuth);
+
+    // Listen for custom auth change event (for same-tab updates)
+    window.addEventListener("authChange", checkAuth);
+
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+      window.removeEventListener("authChange", checkAuth);
+    };
   }, []);
 
   const handleLogout = async () => {
@@ -40,6 +56,8 @@ export default function Navbar() {
       if (typeof window !== "undefined") {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        // Dispatch custom event to notify Navbar of auth change
+        window.dispatchEvent(new Event('authChange'));
       }
       setIsAuthenticated(false);
       setUserName("");
