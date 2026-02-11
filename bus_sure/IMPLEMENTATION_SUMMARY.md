@@ -27,7 +27,7 @@ Successfully identified and implemented 10 core entities for the BusSure interci
 ```
 Migration: 20260124094317_init_schema
 Status: Applied successfully
-Database: SQLite (dev.db)
+Database: Neon database
 Tables Created: 10 entities with proper relationships
 ```
 
