@@ -41,6 +41,9 @@ export default function LoginPage() {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         
+        // Dispatch custom event to notify Navbar of auth change
+        window.dispatchEvent(new Event('authChange'));
+        
         // Navigate to transparent refund page after login
         router.push('/refund');
       } else {
