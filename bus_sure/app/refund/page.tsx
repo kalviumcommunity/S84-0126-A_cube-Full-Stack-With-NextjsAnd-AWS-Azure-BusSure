@@ -117,192 +117,230 @@ export default function TransparentRefundPage() {
 
   return (
     <div className="flex flex-col items-center justify-center px-6 py-10 mx-auto min-h-[calc(100vh-4rem)]">
-      <div className="w-full max-w-2xl bg-white rounded-lg shadow-xl dark:border dark:bg-gray-900 dark:border-gray-700">
-        <div className="p-6 space-y-6">
-          <div>
-            <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-3xl dark:text-white">
-              Transparent Refund Request
+      <div className="w-full max-w-3xl bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl dark:bg-gray-900/90 dark:border dark:border-gray-800 animate-fadeInScale">
+        <div className="p-8 md:p-10 space-y-8">
+          {/* Header Section */}
+          <div className="text-center space-y-3 animate-fadeInUp">
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent font-poppins">
+              Request a Refund
             </h1>
-            <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
-              Share your journey details and reason for refund. Your request will be
-              logged transparently and sent to an agent for review.
+            <p className="text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Fill in your journey details below. We'll review your request and get back to you soon.
             </p>
           </div>
 
           {error && (
-            <div className="p-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">
-              {error}
+            <div className="p-4 text-sm text-red-800 rounded-xl bg-red-50 dark:bg-red-900/20 dark:text-red-400 border border-red-200 dark:border-red-800 animate-shake">
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+                {error}
+              </div>
             </div>
           )}
 
           {success && (
-            <div className="p-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400">
-              {success}
+            <div className="p-4 text-sm text-green-800 rounded-xl bg-green-50 dark:bg-green-900/20 dark:text-green-400 border border-green-200 dark:border-green-800 animate-bounce-slow">
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                {success}
+              </div>
             </div>
           )}
 
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            {/* Personal Info - Read Only */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 animate-fadeInUp animate-delay-100">
               <div>
-                <label className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">
-                  Your name
+                <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Your Name
                 </label>
                 <input
                   type="text"
                   value={userName}
                   disabled
-                  className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 cursor-not-allowed"
+                  className="bg-gray-100/50 border-0 text-gray-600 text-sm rounded-xl block w-full p-3.5 dark:bg-gray-800/50 dark:text-gray-400 cursor-not-allowed"
                 />
               </div>
               <div>
-                <label className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">
-                  Email
+                <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Email Address
                 </label>
                 <input
                   type="email"
                   value={userEmail}
                   disabled
-                  className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 cursor-not-allowed"
+                  className="bg-gray-100/50 border-0 text-gray-600 text-sm rounded-xl block w-full p-3.5 dark:bg-gray-800/50 dark:text-gray-400 cursor-not-allowed"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="busRegistrationNumber" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">
-                  Bus registration number
-                </label>
-                <input
-                  id="busRegistrationNumber"
-                  name="busRegistrationNumber"
-                  type="text"
-                  required
-                  value={formData.busRegistrationNumber}
-                  onChange={handleChange}
-                  placeholder="e.g. MH12AB1234"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                />
+            {/* Journey Details */}
+            <div className="space-y-5 animate-fadeInUp animate-delay-200">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Journey Details</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label htmlFor="busRegistrationNumber" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Bus Registration Number
+                  </label>
+                  <input
+                    id="busRegistrationNumber"
+                    name="busRegistrationNumber"
+                    type="text"
+                    required
+                    value={formData.busRegistrationNumber}
+                    onChange={handleChange}
+                    placeholder="MH12AB1234"
+                    className="bg-white border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent block w-full p-3.5 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-500 dark:text-white transition-all duration-300"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="busOperator" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Bus Operator
+                  </label>
+                  <input
+                    id="busOperator"
+                    name="busOperator"
+                    type="text"
+                    value={formData.busOperator}
+                    onChange={handleChange}
+                    placeholder="XYZ Travels"
+                    className="bg-white border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent block w-full p-3.5 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-500 dark:text-white transition-all duration-300"
+                  />
+                </div>
               </div>
-              <div>
-                <label htmlFor="busOperator" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">
-                  Bus operator / company
-                </label>
-                <input
-                  id="busOperator"
-                  name="busOperator"
-                  type="text"
-                  value={formData.busOperator}
-                  onChange={handleChange}
-                  placeholder="e.g. XYZ Travels"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                />
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div>
+                  <label htmlFor="journeyDate" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Journey Date
+                  </label>
+                  <input
+                    id="journeyDate"
+                    name="journeyDate"
+                    type="date"
+                    required
+                    value={formData.journeyDate}
+                    onChange={handleChange}
+                    className="bg-white border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent block w-full p-3.5 dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-all duration-300"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="fromCity" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    From
+                  </label>
+                  <input
+                    id="fromCity"
+                    name="fromCity"
+                    type="text"
+                    required
+                    value={formData.fromCity}
+                    onChange={handleChange}
+                    placeholder="Mumbai"
+                    className="bg-white border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent block w-full p-3.5 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-500 dark:text-white transition-all duration-300"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="toCity" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    To
+                  </label>
+                  <input
+                    id="toCity"
+                    name="toCity"
+                    type="text"
+                    required
+                    value={formData.toCity}
+                    onChange={handleChange}
+                    placeholder="Pune"
+                    className="bg-white border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent block w-full p-3.5 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-500 dark:text-white transition-all duration-300"
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label htmlFor="journeyDate" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">
-                  Journey date
-                </label>
-                <input
-                  id="journeyDate"
-                  name="journeyDate"
-                  type="date"
-                  required
-                  value={formData.journeyDate}
-                  onChange={handleChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="fromCity" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">
-                  From city
-                </label>
-                <input
-                  id="fromCity"
-                  name="fromCity"
-                  type="text"
-                  required
-                  value={formData.fromCity}
-                  onChange={handleChange}
-                  placeholder="e.g. Mumbai"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="toCity" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">
-                  To city
-                </label>
-                <input
-                  id="toCity"
-                  name="toCity"
-                  type="text"
-                  required
-                  value={formData.toCity}
-                  onChange={handleChange}
-                  placeholder="e.g. Pune"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                />
+            {/* Booking Details */}
+            <div className="space-y-5 animate-fadeInUp animate-delay-300">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Booking Information</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label htmlFor="ticketNumber" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Ticket Reference
+                  </label>
+                  <input
+                    id="ticketNumber"
+                    name="ticketNumber"
+                    type="text"
+                    required
+                    value={formData.ticketNumber}
+                    onChange={handleChange}
+                    placeholder="PNR123456"
+                    className="bg-white border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent block w-full p-3.5 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-500 dark:text-white transition-all duration-300"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="amountPaid" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Amount Paid
+                  </label>
+                  <input
+                    id="amountPaid"
+                    name="amountPaid"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    required
+                    value={formData.amountPaid}
+                    onChange={handleChange}
+                    placeholder="1200.00"
+                    className="bg-white border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent block w-full p-3.5 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-500 dark:text-white transition-all duration-300"
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="ticketNumber" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">
-                  Ticket / booking reference
-                </label>
-                <input
-                  id="ticketNumber"
-                  name="ticketNumber"
-                  type="text"
-                  required
-                  value={formData.ticketNumber}
-                  onChange={handleChange}
-                  placeholder="e.g. PNR123456"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="amountPaid" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">
-                  Amount paid (in your currency)
-                </label>
-                <input
-                  id="amountPaid"
-                  name="amountPaid"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  required
-                  value={formData.amountPaid}
-                  onChange={handleChange}
-                  placeholder="e.g. 1200.00"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="reason" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">
-                What happened? (reason for refund)
+            {/* Reason */}
+            <div className="animate-fadeInUp animate-delay-400">
+              <label htmlFor="reason" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                Reason for Refund
               </label>
               <textarea
                 id="reason"
                 name="reason"
                 required
-                rows={4}
+                rows={5}
                 value={formData.reason}
                 onChange={handleChange}
-                placeholder="Describe delays, cancellations, service issues, or policy reasons for your refund request."
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Please describe what happened - delays, cancellations, service issues, or other reasons..."
+                className="bg-white border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent block w-full p-4 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-500 dark:text-white transition-all duration-300 resize-none"
               />
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 focus:ring-4 focus:outline-none focus:ring-blue-300/50 font-semibold rounded-xl text-base px-6 py-4 text-center dark:focus:ring-blue-800/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl hover:shadow-blue-500/30 transform hover:scale-[1.02] active:scale-[0.98] animate-fadeInUp animate-delay-400"
             >
-              {loading ? "Submitting..." : "Submit refund request"}
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <span className="animate-pulse">Processing your request...</span>
+                </div>
+              ) : (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Submit Refund Request
+                </span>
+              )}
             </button>
           </form>
         </div>
