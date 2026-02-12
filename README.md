@@ -54,7 +54,7 @@ Call APIs from frontend
 
 Day 5 – Mini Integration
 
-Form → API → response
+Form → API → Response
 
 TypeScript practice
 
