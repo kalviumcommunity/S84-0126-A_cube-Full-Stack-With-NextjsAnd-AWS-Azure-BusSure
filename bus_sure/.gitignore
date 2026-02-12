@@ -40,3 +40,37 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# database
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+/prisma/dev.db
+/prisma/*.db
+
+# IDEs and editors
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-*
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Redis
+dump.rdb
+
+# Logs
+*.log
+logs/
