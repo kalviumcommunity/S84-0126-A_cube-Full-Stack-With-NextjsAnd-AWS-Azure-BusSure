@@ -50,9 +50,9 @@ GET & POST requests
 
 Call APIs from frontend
 
-✅ Outcome: Frontend + Backend connected
+✅ Outcome: Frontend + backend connected
 
-Day 5 – Mini Integration
+Day 5 – Mini integration
 
 Form → API → Response
 
