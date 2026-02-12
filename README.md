@@ -1,8 +1,15 @@
-Intercity Bus Refund Transparency System
+# Intercity Bus Refund Transparency System
+
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Latest-blue?style=flat-square&logo=postgresql)
+![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?style=flat-square&logo=prisma)
+
+## Overview
 
 This project aims to bring transparency and accountability to intercity bus ticket cancellations and refunds.
 
-Transparency Goal
+## Transparency Goal
 
 The system clearly shows cancellation rules, refund timelines, and real-time status tracking for users, reducing confusion and improving trust in the refund process.
 
