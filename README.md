@@ -55,9 +55,9 @@ Call APIs from frontend
 
 ✅ Outcome: Frontend + backend connected
 
-Day 5 – Mini Integration
+Day 5 – Mini integration
 
-Form → API → response
+Form → API → Response
 
 TypeScript practice
 
