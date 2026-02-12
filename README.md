@@ -1,3 +1,4 @@
+feature/update-readme
 # Intercity Bus Refund Transparency System
 
 ![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)
@@ -6,6 +7,12 @@
 ![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?style=flat-square&logo=prisma)
 
 ## Overview
+
+Deployed link Vercel - https://s84-0126-a-cube-full-stack-with-nextjs-and-aws-azure-3dn1d4uuf.vercel.appy
+
+
+Intercity Bus Refund Transparency System
+
 
 This project aims to bring transparency and accountability to intercity bus ticket cancellations and refunds.
 
@@ -166,7 +173,7 @@ Day 11 – Redis Basics
 
 Why caching is needed
 
-Redis concepts (key, TTL)
+Redis concepts (key, TTL) 
 
 Install Redis
 
