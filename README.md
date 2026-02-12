@@ -1,3 +1,6 @@
+Deployed link Vercel - https://s84-0126-a-cube-full-stack-with-nextjs-and-aws-azure-3dn1d4uuf.vercel.appy
+
+
 Intercity Bus Refund Transparency System
 
 This project aims to bring transparency and accountability to intercity bus ticket cancellations and refunds.
@@ -159,7 +162,7 @@ Day 11 – Redis Basics
 
 Why caching is needed
 
-Redis concepts (key, TTL)
+Redis concepts (key, TTL) 
 
 Install Redis
 

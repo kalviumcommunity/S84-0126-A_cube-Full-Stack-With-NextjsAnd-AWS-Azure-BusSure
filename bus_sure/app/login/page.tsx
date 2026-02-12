@@ -41,6 +41,9 @@ export default function LoginPage() {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         
+        // Dispatch custom event to notify Navbar of auth change
+        window.dispatchEvent(new Event('authChange'));
+        
         // Navigate to transparent refund page after login
         router.push('/refund');
       } else {
@@ -56,20 +59,28 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] px-6 py-8 mx-auto md:h-screen lg:py-0">
-      <div className="w-full bg-white rounded-lg shadow-xl dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+      <div className="w-full bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800/80 dark:border-gray-700 animate-fadeInScale">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-          <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-            Sign in to your account
+          <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-3xl dark:text-white animate-fadeInUp font-poppins">
+            Welcome Back
           </h1>
+          <p className="text-sm text-gray-600 dark:text-gray-400 animate-fadeInUp animate-delay-100">
+            Sign in to access your account
+          </p>
           
           {error && (
-            <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">
-              {error}
+            <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 animate-shake border-l-4 border-red-500">
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"></path>
+                </svg>
+                {error}
+              </div>
             </div>
           )}
 
           <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
-            <div>
+            <div className="animate-fadeInUp animate-delay-200">
               <label
                 htmlFor="email"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -82,13 +93,13 @@ export default function LoginPage() {
                 id="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
+                className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all duration-300"
                 placeholder="name@company.com"
                 required
                 disabled={loading}
               />
             </div>
-            <div>
+            <div className="animate-fadeInUp animate-delay-300">
               <label
                 htmlFor="password"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -102,12 +113,12 @@ export default function LoginPage() {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="••••••••"
-                className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition-colors"
+                className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all duration-300"
                 required
                 disabled={loading}
               />
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between animate-fadeInUp animate-delay-400">
               <div className="flex items-start">
                 <div className="flex items-center h-5">
                   <input
@@ -137,27 +148,32 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full text-white bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center dark:focus:ring-blue-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-blue-500/50 transform hover:scale-[1.02] active:scale-[0.98] animate-fadeInUp animate-delay-400"
             >
               {loading ? (
-                <div className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <div className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Signing in...
+                  <span className="animate-pulse">Logging you in...</span>
                 </div>
               ) : (
-                'Sign in'
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                  </svg>
+                  Sign in to your account
+                </span>
               )}
             </button>
-            <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+            <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center animate-fadeInUp animate-delay-400">
               Don't have an account yet?{" "}
               <Link
                 href="/signup"
-                className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                className="font-semibold text-blue-600 hover:text-violet-600 hover:underline dark:text-blue-500 transition-colors duration-300"
               >
-                Sign up
+                Create account
               </Link>
             </p>
           </form>

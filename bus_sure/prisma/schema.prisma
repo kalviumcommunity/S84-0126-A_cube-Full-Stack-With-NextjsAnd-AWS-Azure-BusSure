@@ -6,10 +6,11 @@
 
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -61,8 +62,8 @@ model Policy {
   busId         Int
   startDate     DateTime
   endDate       DateTime
-  premium       Float         // Changed from Decimal to Float for SQLite
-  coverage      Float         // Changed from Decimal to Float for SQLite
+  premium       Decimal       @db.Decimal(10, 2)
+  coverage      Decimal       @db.Decimal(12, 2)
   status        String        @default("ACTIVE") // ACTIVE, EXPIRED, CANCELLED, SUSPENDED
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
@@ -89,7 +90,7 @@ model Claim {
   policyId      Int
   incidentDate  DateTime
   description   String
-  amount        Float       // Changed from Decimal to Float for SQLite
+  amount        Decimal     @db.Decimal(10, 2)
   status        String      @default("PENDING") // PENDING, APPROVED, REJECTED, PROCESSING, SETTLED
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
@@ -139,7 +140,7 @@ model Document {
 model Payment {
   id            Int      @id @default(autoincrement())
   claimId       Int      @unique
-  amount        Float
+  amount        Decimal  @db.Decimal(10, 2)
   method        String   // BANK_TRANSFER, CHECK, DIGITAL_WALLET
   status        String   @default("PENDING") // PENDING, PROCESSED, FAILED, CANCELLED
   transactionId String?  @unique

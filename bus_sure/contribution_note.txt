@@ -1,0 +1,26 @@
+
+# Contribution Note
+
+This file was added as part of the Work Integration task.
+
+Purpose:
+- Demonstrate Pull Request workflow
+- Practice GitHub collaboration
+- Understand project contribution process
+
+Date: Feb 2026
+
+--------------------
+
+## Additional Contributions
+
+- Enhanced documentation for better clarity.
+- Implemented new features based on user feedback.
+- Fixed bugs reported by users to improve stability.
+
+Future Goals:
+- Continue improving the user experience.
+- Collaborate with team members for feature development.
+- Regularly update documentation to reflect changes.
+
+Thank you for reviewing my contributions!
