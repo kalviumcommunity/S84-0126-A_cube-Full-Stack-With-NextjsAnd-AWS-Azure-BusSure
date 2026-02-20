@@ -1,4 +1,4 @@
-Deployed link Vercel - https://s84-0126-a-cube-full-stack-with-nextjs-and-aws-azure-3dn1d4uuf.vercel.appy
+Deployed link Vercel - https://s84-0126-a-cube-full-stack-with-nextjs-and-aws-azure-gkymffxmz.vercel.app
 
 
 Intercity Bus Refund Transparency System
