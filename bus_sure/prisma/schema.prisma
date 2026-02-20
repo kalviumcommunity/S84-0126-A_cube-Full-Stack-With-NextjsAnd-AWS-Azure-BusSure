@@ -117,6 +117,7 @@ model Document {
   originalName String
   mimeType    String
   size        Int
+  url         String?
   uploadedBy  Int
   claimId     Int?
   policyId    Int?
