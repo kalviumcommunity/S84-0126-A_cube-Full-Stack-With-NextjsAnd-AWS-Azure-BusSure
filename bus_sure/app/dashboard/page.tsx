@@ -64,7 +64,7 @@ export default function DashboardPage() {
           totalPolicies: 3,
           activeClaims: 2,
           pendingClaims: 1,
-          totalCoverage: 150000
+          totalCoverage: 150
         });
       } catch (error) {
         console.error('Error parsing user data:', error);
@@ -313,7 +313,7 @@ export default function DashboardPage() {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Coverage</p>
                 <p className="text-2xl font-semibold text-gray-900 dark:text-white">
-                  ${stats?.totalCoverage?.toLocaleString() || 0}
+                  { 150}
                 </p>
               </div>
             </div>
